@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Register / Login - FUTi HUB</title>
+        <link
+            rel="stylesheet"
+            href="../styles/register/register.css"
+            type="text/css"
+            media="all"
+        />
+    </head>
+    <body>
+        <form
+            id="signup"
+            class="register"
+            action=""
+            method="post"
+            accept-charset="utf-8"
+        >
+            <div class="form-hd">
+                <h4>Create a FUTi HUB Account</h4>
+                <p>Get more, more fun</p>
+            </div>
+
+            <div class="inp-cont">
+                <label for="name">Full Name</label>
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    placeholder="Full Name"
+                />
+            </div>
+
+            <div class="inp-cont">
+                <label for="level">Level</label>
+                <input
+                    type="text"
+                    name="level"
+                    id="level"
+                    placeholder="Level or Program e.g 100LVL or HND2"
+                    
+                />
+            </div>
+
+            <div class="inp-cont">
+                <label for="dicipline">Dicipline</label>
+                <input
+                    type="text"
+                    name="dicipline"
+                    id="dicipline"
+                    placeholder="Dicipline e.g Computer Science, SLT, Civil Engr"
+                />
+            </div>
+
+            <div class="inp-cont">
+                <label for="sid">Matric No.</label>
+                <input
+                    type="text"
+                    name="sid"
+                    id="sid"
+                    placeholder="Student ID or Matric No. 2460xxx12, FND/xxx/2026"
+                />
+            </div>
+
+            <div class="inp-cont">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Password ? if forgotten contact your HOC or Dept. Security Mersure Apply to HOC,DEPT,and You"
+                />
+            </div>
+
+            <div class="t-c">
+                <p>
+                    By creating you agree to our vision and mission also our T&C
+                    for a Better Place FUTi!!!
+                </p>
+            </div>
+
+            <div class="form-ft">
+                <button class="reg-btn" type="submit">Sign Up</button>
+                <a class="dis-log" href="#signin"
+                    >Already have an account sigin</a
+                >
+
+                <p>
+                    Contact us for more info @haleem002@futi.com We care about
+                    you :)
+                </p>
+            </div>
+        </form>
+
+        <form
+            id="signin"
+            class="login"
+            action=""
+            method="get"
+            accept-charset="utf-8"
+        >
+            <div class="form-hd">
+                <h4>Welcome back FUTinant more Power ∞</h4>
+                <p>Catch Up, more fun</p>
+            </div>
+            <div class="inp-cont">
+                <label for="log-sid">Matric No.</label>
+                <input
+                    type="text"
+                    name="sid"
+                    id="log-sid"
+                    placeholder="Student ID or Matric No. 2460xxx12, FND/xxx/2026"
+                />
+            </div>
+
+            <div class="inp-cont">
+                <label for="log-password">Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    id="log-password"
+                    placeholder="Password ? if forgotten contact your HOC or Dept. Security Mersure Apply to HOC,DEPT,and You"
+                />
+            </div>
+
+            <div class="t-c">
+                <p>Jump back where you left off, FUTi!!!</p>
+            </div>
+
+            <div class="form-ft">
+                <button class="log-btn" type="submit">Sign In</button>
+                <a class="dis-reg" href="#signup"
+                    >Don't have an account sigup</a
+                >
+
+                <p>
+                    Contact us for more info @haleem002@futi.com We care about
+                    you :)
+                </p>
+            </div>
+        </form>
+
+        <script
+            src="../scripts/register/register.js"
+            type="text/javascript"
+            charset="utf-8"
+        ></script>
+    </body>
+</html>

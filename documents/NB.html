@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FUTi University Notice Board</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff9e6;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 20px;
+      color: #4a3f35;
+      font-size: 2.5em;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .board {
+      background: url('https://i.imgur.com/7kZyYyG.jpg') no-repeat center center;
+      background-size: cover;
+      padding: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 90vh;
+      position: relative;
+    }
+
+    .note {
+      width: 220px;
+      min-height: 120px;
+      max-height: 200px;
+      margin: 15px;
+      padding: 15px;
+      background: #fff8c4;
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+      border: 1px solid #d5c78f;
+      transform: rotate(-2deg);
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .note:hover {
+      transform: rotate(0deg) scale(1.05);
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+      z-index: 1;
+    }
+
+    .note:active {
+      transform: rotate(5deg) scale(1.02);
+    }
+
+    .pin {
+      width: 18px;
+      height: 18px;
+      background: #ff4d4d;
+      border-radius: 50%;
+      position: absolute;
+      top: -9px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .note-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 1.1em;
+      color: #4a3f35;
+    }
+
+    .note-content {
+      font-size: 13px;
+      color: #333;
+      max-height: 80px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .note-meta {
+      font-size: 11px;
+      color: #666;
+      margin-top: 8px;
+      border-top: 1px solid #d5c78f;
+      padding-top: 5px;
+    }
+
+    .post-form {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      margin: 20px auto;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      display: none;
+      box-sizing: border-box;
+    }
+
+    .post-form.active {
+      display: block;
+    }
+
+    .post-form input,
+    .post-form textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #d5c78f;
+      border-radius: 5px;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+
+    .post-form textarea {
+      resize: vertical;
+      min-height: 80px;
+      max-height: 150px;
+    }
+
+    .post-form button {
+      background: #4a3f35;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .post-form button:hover {
+      background: #6b5848;
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(2deg);
+      background: #fff8c4;
+      padding: 20px;
+      width: 80%;
+      max-width: 450px;
+      max-height: 60vh;
+      overflow-y: auto;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+      border: 1px solid #d5c78f;
+      z-index: 1000;
+      transition: transform 0.3s ease-in-out;
+      display: none;
+      box-sizing: border-box;
+    }
+
+    .popup.show {
+      display: block;
+    }
+
+    .popup-content {
+      font-size: 14px;
+      color: #333;
+    }
+
+    .popup-meta {
+      font-size: 11px;
+      color: #666;
+      margin-top: 10px;
+      border-top: 1px solid #d5c78f;
+      padding-top: 5px;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 25px;
+      text-align: center;
+    }
+
+    .popup-close:hover {
+      background: #cc3d3d;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      display: none;
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
+    .auth-message {
+      text-align: center;
+      color: #4a3f35;
+      margin: 20px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>FUTi University Community Notice Board</h1>
+  <div class="auth-message" id="auth-message"></div>
+  <div class="post-form" id="post-form">
+    <input type="text" id="note-title" placeholder="Notice Title" maxlength="50" required>
+    <textarea id="note-content" placeholder="Notice Content (20-500 characters)" required></textarea>
+    <input type="date" id="note-expiry" required>
+    <button onclick="postNotice()">Post Notice</button>
+  </div>
+  <div class="board" id="board"></div>
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup">
+    <button class="popup-close" onclick="closePopup()">X</button>
+    <div class="popup-content" id="popup-content"></div>
+    <div class="popup-meta" id="popup-meta"></div>
+  </div>
+
+  <script>
+    // Check if user is logged in
+    const user = {
+      name: localStorage.getItem('name'),
+      sid: localStorage.getItem('sid'),
+      discipline: localStorage.getItem('discipline')
+    };
+    const authMessage = document.getElementById('auth-message');
+    const postForm = document.getElementById('post-form');
+
+    if (!user.name || !user.sid || !user.discipline) {
+      authMessage.innerText = 'Please sign in to post notices. You can still view existing notices below.';
+      postForm.classList.remove('active');
+    } else {
+      authMessage.innerText = `Welcome, ${user.name}!`;
+      postForm.classList.add('active');
+    }
+
+    // Load notices from localStorage or initialize with sample notices
+    let notices = JSON.parse(localStorage.getItem('notices')) || [
+      {
+        title: "Meeting Reminder",
+        content: "Staff meeting on Monday at 10 AM in Conference Room B.",
+        name: "Admin",
+        sid: "A00001",
+        discipline: "Administration",
+        school: "FUTi University",
+        posted: new Date().toISOString(),
+        expiry: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      },
+      {
+        title: "Lost & Found",
+        content: "Set of keys found near the cafeteria. Contact admin office.",
+        name: "Admin",
+        sid: "A00001",
+        discipline: "Administration",
+        school: "FUTi University",
+        posted: new Date().toISOString(),
+        expiry: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      }
+    ];
+
+    // Save initial notices to localStorage if none exist
+    if (!localStorage.getItem('notices')) {
+      localStorage.setItem('notices', JSON.stringify(notices));
+    }
+
+    // Function to render notices
+    function renderNotices() {
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      notices.forEach((notice, index) => {
+        const note = document.createElement('div');
+        note.className = 'note';
+        note.setAttribute('data-index', index);
+        note.innerHTML = `
+          <div class="pin"></div>
+          <div class="note-title">${notice.title}</div>
+          <div class="note-content">${notice.content.substring(0, 80)}${notice.content.length > 80 ? '...' : ''}</div>
+          <div class="note-meta">
+            Posted by: ${notice.name} (${notice.sid})<br>
+            Discipline: ${notice.discipline}<br>
+            School: ${notice.school}
+          </div>
+        `;
+        note.addEventListener('click', () => openPopup(index));
+        board.appendChild(note);
+      });
+    }
+
+    // Function to post a new notice
+    function postNotice() {
+      if (!user.name || !user.sid || !user.discipline) {
+        alert('You must be signed in to post a notice.');
+        return;
+      }
+      const title = document.getElementById('note-title').value;
+      const content = document.getElementById('note-content').value;
+      const expiry = document.getElementById('note-expiry').value;
+      if (!title || !content || !expiry) {
+        alert('Please fill in all fields.');
+        return;
+      }
+      if (content.length < 20 || content.length > 500) {
+        alert('Notice content must be between 20 and 500 characters.');
+        return;
+      }
+      const notice = {
+        title,
+        content,
+        name: user.name,
+        sid: user.sid,
+        discipline: user.discipline,
+        school: 'FUTi University',
+        posted: new Date().toISOString(),
+        expiry
+      };
+      notices.push(notice);
+      localStorage.setItem('notices', JSON.stringify(notices));
+      renderNotices();
+      document.getElementById('note-title').value = '';
+      document.getElementById('note-content').value = '';
+      document.getElementById('note-expiry').value = '';
+    }
+
+    // Function to open popup
+    function openPopup(index) {
+      const notice = notices[index];
+      const popup = document.getElementById('popup');
+      const overlay = document.getElementById('overlay');
+      document.getElementById('popup-content').innerText = notice.content;
+      document.getElementById('popup-meta').innerHTML = `
+        Posted by: ${notice.name} (${notice.sid})<br>
+        Discipline: ${notice.discipline}<br>
+        School: ${notice.school}<br>
+        Posted on: ${new Date(notice.posted).toLocaleString()}<br>
+        Expires on: ${new Date(notice.expiry).toLocaleDateString()}
+      `;
+      popup.classList.add('show');
+      overlay.classList.add('show');
+      popup.scrollTop = popup.scrollHeight; // Scroll to bottom
+    }
+
+    // Function to close popup
+    function closePopup() {
+      const popup = document.getElementById('popup');
+      const overlay = document.getElementById('overlay');
+      popup.classList.remove('show');
+      overlay.classList.remove('show');
+    }
+
+    // Initial render
+    renderNotices();
+  </script>
+</body>
+</html>

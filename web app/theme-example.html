@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Theme with Gradient Text</title>
+  <style>
+    /* Define CSS variables for themes */
+    :root {
+      --bg-color: #ffffff;
+      /* Background color */
+      --text-color: #000000;
+      /* Default text color */
+      --gradient-start: #ff0000;
+      /* Gradient start color */
+      --gradient-end: #00ff00;
+      /* Gradient end color */
+      --button-bg: #007bff;
+      /* Button background */
+      --button-text: #ffffff;
+      /* Button text color */
+    }
+    
+    /* Dark theme variables */
+    [data-theme="dark"] {
+      --bg-color: #1a1a1a;
+      --text-color: #ffffff;
+      --gradient-start: #ff6666;
+      /* Softer red for dark mode */
+      --gradient-end: #66ff66;
+      /* Softer green for dark mode */
+      --button-bg: #0056b3;
+      --button-text: #ffffff;
+    }
+    
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      transition: all 0.3s ease;
+      /* Smooth theme transition */
+    }
+    
+    .gradient-text {
+      font-size: 48px;
+      font-weight: bold;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+      margin: 20px 0;
+    }
+    
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    button:hover {
+      background-color: color-mix(in srgb, var(--button-bg) 80%, #000000);
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="gradient-text">Dynamic Theme Demo</h1>
+  <button id="theme-toggle">Toggle Theme</button>
+  
+  <script>
+    // Get the toggle button
+    const toggleButton = document.getElementById('theme-toggle');
+    
+    // Check for saved theme in localStorage
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateButtonText(savedTheme);
+    
+    // Add click event listener to toggle theme
+    toggleButton.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      // Update theme attribute
+      document.documentElement.setAttribute('data-theme', newTheme);
+      // Save theme to localStorage
+      localStorage.setItem('theme', newTheme);
+      // Update button text
+      updateButtonText(newTheme);
+    });
+    
+    // Function to update button text based on theme
+    function updateButtonText(theme) {
+      toggleButton.textContent = `Switch to ${theme === 'light' ? 'Dark' : 'Light'} Theme`;
+    }
+  </script>
+</body>
+
+</html>
