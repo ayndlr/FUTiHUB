@@ -40,6 +40,7 @@ regBtn.addEventListener("click", e => {
         alert(
             "All field are required for this form, hint password must be greater than 5 character"
         );
+        return;
     }
     
     let regReq = fetch("http:://localhost:5000", {
